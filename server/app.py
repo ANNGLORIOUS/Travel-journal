@@ -50,6 +50,13 @@ class UserLogin(Resource):
         
         return jsonify({"error": "Invalid credentials"}), 401
 
+# Password reset request (placeholder)
+class UserResetPassword(Resource):
+    def post(self):
+        data = request.get_json()
+        # Handling password reset logic here
+        return jsonify({"message": "Password reset request received"}), 200
+
 # User profile
 class UserProfile(Resource):
     @jwt_required()
@@ -82,6 +89,19 @@ class EntryList(Resource):
             } for entry in entries
         ]
         return jsonify(entries_list), 200
+
+    @jwt_required()
+    def post(self):
+        data = request.get_json()
+        new_entry = Entry(
+            location=data.get('location'),
+            date=datetime.strptime(data.get('date'), '%Y-%m-%d %H:%M:%S'),
+            description=data.get('description'),
+            user_id=get_jwt_identity()
+        )
+        db.session.add(new_entry)
+        db.session.commit()
+        return jsonify({"id": new_entry.id}), 201
 
 # Retrieve a specific entry
 class EntryResource(Resource):
@@ -146,6 +166,7 @@ class EntryPhotos(Resource):
 # Adding resources to the API
 api.add_resource(UserRegister, '/api/users/register')
 api.add_resource(UserLogin, '/api/users/login')
+api.add_resource(UserResetPassword, '/api/users/reset-password')  
 api.add_resource(UserProfile, '/api/users/profile')
 api.add_resource(EntryList, '/api/entries')
 api.add_resource(EntryResource, '/api/entries/<int:id>')
