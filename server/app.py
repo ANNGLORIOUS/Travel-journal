@@ -2,7 +2,6 @@
 
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
-from flask_restful import Api, Resource
 from models import db, User, Entry, Photo  
 import os
 from datetime import datetime
@@ -17,81 +16,81 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'my_jwt_secret_key'  
 app.json.compact = False  
 
-# Initializing Flask-Migrate and Flask-RESTful
+# Initializing Flask-Migrate and JWT Manager
 migrate = Migrate(app, db)
-api = Api(app)
 jwt = JWTManager(app)
 
 # Initializing the database with the app context
 db.init_app(app)
 
 # User registration
-class UserRegister(Resource):
-    def post(self):
-        data = request.get_json()
-        new_user = User(
-            username=data.get('username'),
-            email=data.get('email'),
-            password_hash=data.get('password_hash') 
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify({"message": "User registered successfully"}), 201
+@app.route('/api/users/register', methods=['POST'])
+def user_register():
+    data = request.get_json()
+    new_user = User(
+        username=data.get('username'),
+        email=data.get('email'),
+        password_hash=data.get('password_hash') 
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({"message": "User registered successfully"}), 201
 
 # User login
-class UserLogin(Resource):
-    def post(self):
-        data = request.get_json()
-        user = User.query.filter_by(email=data.get('email')).first()
-        
-        if user and user.verify_password(data.get('password')): 
-            access_token = create_access_token(identity=user.id)
-            return jsonify(access_token=access_token), 200
-        
-        return jsonify({"error": "Invalid credentials"}), 401
+@app.route('/api/users/login', methods=['POST'])
+def user_login():
+    data = request.get_json()
+    user = User.query.filter_by(email=data.get('email')).first()
+    
+    if user and user.verify_password(data.get('password')): 
+        access_token = create_access_token(identity=user.id)
+        return jsonify(access_token=access_token), 200
+    
+    return jsonify({"error": "Invalid credentials"}), 401
 
 # Password reset request (placeholder)
-class UserResetPassword(Resource):
-    def post(self):
-        data = request.get_json()
-        # Handling password reset logic here
-        return jsonify({"message": "Password reset request received"}), 200
+@app.route('/api/users/reset-password', methods=['POST'])
+def user_reset_password():
+    data = request.get_json()
+    # Handling password reset 
+    return jsonify({"message": "Password reset request received"}), 200
 
 # User profile
-class UserProfile(Resource):
-    @jwt_required()
-    def get(self):
-        current_user_id = get_jwt_identity()
-        user = User.query.get(current_user_id)
-        
-        if user is None:
-            return jsonify({"error": "User not found"}), 404
-        
-        user_data = {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email
-        }
-        
-        return jsonify(user_data), 200
+@app.route('/api/users/profile', methods=['GET'])
+@jwt_required()
+def user_profile():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    
+    if user is None:
+        return jsonify({"error": "User not found"}), 404
+    
+    user_data = {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email
+    }
+    
+    return jsonify(user_data), 200
 
 # Retrieve all entries
-class EntryList(Resource):
-    def get(self):
+@app.route('/api/entries', methods=['GET', 'POST'])
+@jwt_required(optional=True)
+def entry_list():
+    if request.method == 'GET':
         entries = Entry.query.all()
         entries_list = [
             {
                 "id": entry.id,
-                "location": entry.location,
-                "date": entry.date.strftime('%Y-%m-%d %H:%M:%S'),
-                "description": entry.description,
+                "location": str(entry.location), 
+                "date": entry.date.strftime('%Y-%m-%d %H:%M:%S') if entry.date else None,
+                "description": str(entry.description), 
                 "user_id": entry.user_id
             } for entry in entries
         ]
         return jsonify(entries_list), 200
 
-    @jwt_required()
-    def post(self):
+    if request.method == 'POST':
         data = request.get_json()
         new_entry = Entry(
             location=data.get('location'),
@@ -104,9 +103,11 @@ class EntryList(Resource):
         return jsonify({"id": new_entry.id}), 201
 
 # Retrieve a specific entry
-class EntryResource(Resource):
-    def get(self, id):
-        entry = Entry.query.get(id)
+@app.route('/api/entries/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@jwt_required(optional=True)
+def entry_resource(id):
+    entry = Entry.query.get(id)
+    if request.method == 'GET':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
 
@@ -119,9 +120,7 @@ class EntryResource(Resource):
         }
         return jsonify(entry_data), 200
 
-    @jwt_required()
-    def put(self, id):
-        entry = Entry.query.get(id)
+    if request.method == 'PUT':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
         
@@ -133,9 +132,7 @@ class EntryResource(Resource):
         db.session.commit()
         return jsonify({"message": "Entry updated successfully"}), 200
 
-    @jwt_required()
-    def delete(self, id):
-        entry = Entry.query.get(id)
+    if request.method == 'DELETE':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
         
@@ -144,10 +141,11 @@ class EntryResource(Resource):
         return jsonify({"message": "Entry deleted successfully"}), 200
 
 # Retrieve all photos for an entry
-class EntryPhotos(Resource):
-    @jwt_required()
-    def get(self, id):
-        entry = Entry.query.get(id)
+@app.route('/api/entries/<int:id>/photos', methods=['GET', 'POST'])
+@jwt_required()
+def entry_photos(id):
+    entry = Entry.query.get(id)
+    if request.method == 'GET':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
         
@@ -155,22 +153,12 @@ class EntryPhotos(Resource):
         photos_list = [{"id": photo.id, "url": photo.url} for photo in photos]
         return jsonify(photos_list), 200
 
-    @jwt_required()
-    def post(self, id):
+    if request.method == 'POST':
         data = request.get_json()
         new_photo = Photo(url=data.get('url'), entry_id=id)
         db.session.add(new_photo)
         db.session.commit()
         return jsonify({"id": new_photo.id, "url": new_photo.url}), 201
-
-# Adding resources to the API
-api.add_resource(UserRegister, '/api/users/register')
-api.add_resource(UserLogin, '/api/users/login')
-api.add_resource(UserResetPassword, '/api/users/reset-password')  
-api.add_resource(UserProfile, '/api/users/profile')
-api.add_resource(EntryList, '/api/entries')
-api.add_resource(EntryResource, '/api/entries/<int:id>')
-api.add_resource(EntryPhotos, '/api/entries/<int:id>/photos')
 
 # Running the application
 if __name__ == '__main__':
