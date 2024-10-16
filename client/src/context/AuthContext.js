@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = () => {
-    // Implement logout logic here
+    // To implement logout logic here
     setIsAuthenticated(false);
   };
 

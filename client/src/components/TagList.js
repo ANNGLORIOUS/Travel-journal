@@ -1,24 +1,15 @@
-import React, { useContext } from "react";
-import { Route, Redirect } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import React from "react";
 
-function ProtectedRoute({ component: Component, ...rest }) {
-  const { isAuthenticated } = useContext(AuthContext);
-
+function TagList({ tags }) {
   return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAuthenticated ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
-          />
-        )
-      }
-    />
+    <div>
+      {tags.map((tag) => (
+        <span key={tag.id} className="badge bg-secondary me-1">
+          {tag.name}
+        </span>
+      ))}
+    </div>
   );
 }
 
-export default ProtectedRoute;
+export default TagList;
