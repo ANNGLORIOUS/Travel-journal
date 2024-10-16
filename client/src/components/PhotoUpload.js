@@ -1,3 +1,4 @@
+// // export default PhotoUpload;
 import React, { useState } from "react";
 import { uploadPhoto } from "../utils/api";
 
