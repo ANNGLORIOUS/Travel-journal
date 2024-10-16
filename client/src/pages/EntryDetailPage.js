@@ -72,7 +72,8 @@ function EntryDetailPage() {
 
   return (
     <div>
-      <EntryDetail entry={entry} />
+      {/* <EntryDetail entry={entry} /> */}
+      <EntryDetail entryId={id} />
       <h2 className="mt-4">Photos</h2>
       <div className="row">
         {photos.map((photo) => (
