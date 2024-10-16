@@ -8,7 +8,7 @@ function CreateEntryPage() {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      await createEntry(values);
+      await createEntry(values); 
       history.push("/");
     } catch (error) {
       console.error("Error creating entry:", error);

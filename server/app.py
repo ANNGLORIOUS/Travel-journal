@@ -107,9 +107,16 @@ def entry_list():
 
     if request.method == 'POST':
         data = request.get_json()
+        
+        # Use only the date format
+        try:
+            entry_date = datetime.strptime(data.get('date'), '%Y-%m-%d')  # Adjusted format
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use 'YYYY-MM-DD'."}), 400
+
         new_entry = Entry(
             location=data.get('location'),
-            date=datetime.strptime(data.get('date'), '%Y-%m-%d %H:%M:%S'),
+            date=entry_date,
             description=data.get('description'),
             user_id=get_jwt_identity()
         )
@@ -170,10 +177,22 @@ def entry_photos(id):
 
     if request.method == 'POST':
         data = request.get_json()
-        new_photo = Photo(url=data.get('url'), entry_id=id)
-        db.session.add(new_photo)
+        
+        # Adjusted to handle date without time
+        try:
+            entry_date = datetime.strptime(data.get('date'), '%Y-%m-%d')
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use 'YYYY-MM-DD'."}), 400
+
+        new_entry = Entry(
+            location=data.get('location'),
+            date=entry_date,
+            description=data.get('description'),
+            user_id=get_jwt_identity()
+        )
+        db.session.add(new_entry)
         db.session.commit()
-        return jsonify({"id": new_photo.id, "url": new_photo.url}), 201
+        return jsonify({"id": new_entry.id}), 201
 
 # Running the application
 if __name__ == '__main__':
