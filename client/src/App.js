@@ -1,24 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
+import HomePage from "./pages/HomePage";
+import CreateEntryPage from "./pages/CreateEntryPage";
+import EditEntryPage from "./pages/EditEntryPage";
+import EntryDetailPage from "./pages/EntryDetailPage";
+import TagsPage from "./pages/TagsPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ProfilePage from "./pages/ProfilePage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <div className="app">
+          <Navbar />
+          <div className="container mt-4">
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <ProtectedRoute
+                path="/entries/create"
+                component={CreateEntryPage}
+              />
+              <ProtectedRoute
+                path="/entries/edit/:id"
+                component={EditEntryPage}
+              />
+              <Route path="/entries/:id" component={EntryDetailPage} />
+              <Route path="/tags" component={TagsPage} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/register" component={RegisterPage} />
+              <ProtectedRoute path="/profile" component={ProfilePage} />
+              <Route path="/reset-password" component={ResetPasswordPage} />
+            </Switch>
+          </div>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
