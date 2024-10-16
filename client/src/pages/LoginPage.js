@@ -41,11 +41,7 @@ function LoginPage() {
                 Username
               </label>
               <Field type="text" name="username" className="form-control" />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="username" component="div" className="text-danger" />
             </div>
 
             <div className="mb-3">
@@ -53,22 +49,14 @@ function LoginPage() {
                 Password
               </label>
               <Field type="password" name="password" className="form-control" />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-danger"
-              />
+              <ErrorMessage name="password" component="div" className="text-danger" />
             </div>
 
             {errors.general && (
               <div className="alert alert-danger">{errors.general}</div>
             )}
 
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={isSubmitting}
-            >
+            <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </Form>

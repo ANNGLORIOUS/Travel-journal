@@ -23,7 +23,8 @@ function RegisterPage() {
       await register(values);
       history.push("/login");
     } catch (error) {
-      setFieldError("general", "Registration failed. Please try again.");
+      const errorMessage = error.response?.data?.error || "Registration failed. Please try again.";
+      setFieldError("general", errorMessage);
     } finally {
       setSubmitting(false);
     }
