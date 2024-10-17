@@ -125,7 +125,7 @@ def entry_list():
         return jsonify({"id": new_entry.id}), 201
 
 # Retrieve a specific entry
-@app.route('/api/entries/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@app.route('/api/entries/<int:id>', methods=['GET', 'PUT'])
 @jwt_required(optional=True)
 def entry_resource(id):
     entry = Entry.query.get(id)
@@ -153,14 +153,18 @@ def entry_resource(id):
 
         db.session.commit()
         return jsonify({"message": "Entry updated successfully"}), 200
+    
+# Deleting a photo  
+@app.route('/api/entries/<int:entry_id>/photos/<int:photo_id>', methods=['DELETE'])
+@jwt_required()
+def delete_photo(entry_id, photo_id):
+    photo = Photo.query.filter_by(id=photo_id, entry_id=entry_id).first()
+    if photo is None:
+        return jsonify({"error": "Photo not found"}), 404
 
-    if request.method == 'DELETE':
-        if entry is None:
-            return jsonify({"error": "Entry not found"}), 404
-        
-        db.session.delete(entry)
-        db.session.commit()
-        return jsonify({"message": "Entry deleted successfully"}), 200
+    db.session.delete(photo)
+    db.session.commit()
+    return jsonify({"message": "Photo deleted successfully"}), 200
 
 # Retrieve all photos for an entry
 @app.route('/api/entries/<int:id>/photos', methods=['GET', 'POST'])
