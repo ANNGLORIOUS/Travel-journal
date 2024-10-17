@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getUserProfile } from "../utils/api";
-
+import { Link } from "react-router-dom";
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
 
@@ -29,9 +29,9 @@ function ProfilePage() {
           <p className="card-text">
             Joined: {new Date(profile.created_at).toLocaleDateString()}
           </p>
-          {/* <Link to={`/entries/${entry.id}`} className="btn btn-primary">
-                Resset Password
-          </Link> */}
+          <Link to="/reset-password" className="btn btn-primary">
+            Reset Password
+          </Link>
         </div>
       </div>
     </div>
