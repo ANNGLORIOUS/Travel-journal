@@ -29,7 +29,6 @@ jwt = JWTManager(app)
 db.init_app(app)
 
 # User registration
-# User registration
 @app.route('/api/users/register', methods=['POST'])
 def user_register():
     data = request.get_json()
@@ -55,7 +54,7 @@ def user_login():
     if not data or not all(key in data for key in ('username', 'password')):
         return jsonify({"error": "Missing required fields"}), 400
 
-    user = User.query.filter_by(username=data['username']).first()  # Change from email to username
+    user = User.query.filter_by(username=data['username']).first()
     
     if user and check_password_hash(user.password_hash, data['password']):
         access_token = create_access_token(identity=user.id)
@@ -67,7 +66,6 @@ def user_login():
 @app.route('/api/users/reset-password', methods=['POST'])
 def user_reset_password():
     data = request.get_json()
-    # Handling password reset 
     return jsonify({"message": "Password reset request received"}), 200
 
 # User profile
@@ -128,7 +126,8 @@ def entry_list():
 @app.route('/api/entries/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 @jwt_required(optional=True)
 def entry_resource(id):
-    entry = Entry.query.get(id)
+    entry = db.session.get(Entry, id)
+
     if request.method == 'GET':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
@@ -149,7 +148,7 @@ def entry_resource(id):
         data = request.get_json()
         entry.location = data.get('location', entry.location)
 
-        # Trying
+        # Update date with parsing
         date_str = data.get('date', entry.date.strftime('%Y-%m-%d %H:%M:%S'))
         try:
             entry.date = datetime.strptime(date_str, '%Y-%m-%d %H:%M:%S')
@@ -168,7 +167,7 @@ def entry_resource(id):
         db.session.delete(entry)
         db.session.commit()
         return jsonify({"message": "Entry deleted successfully"}), 200
-    
+
 # Deleting a photo  
 @app.route('/api/entries/<int:entry_id>/photos/<int:photo_id>', methods=['DELETE'])
 @jwt_required()
@@ -185,7 +184,7 @@ def delete_photo(entry_id, photo_id):
 @app.route('/api/entries/<int:id>/photos', methods=['GET', 'POST'])
 @jwt_required()
 def entry_photos(id):
-    entry = Entry.query.get(id)
+    entry = db.session.get(Entry, id)
     
     if request.method == 'GET':
         if entry is None:
