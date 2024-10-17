@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
-from datetime import datetime, timezone
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -25,7 +25,6 @@ class Entry(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    
     photos = db.relationship('Photo', back_populates='entry', lazy=True, cascade='all, delete-orphan')
     tags = db.relationship('Tag', secondary='entry_tags', back_populates='entries', lazy='dynamic')
     user = db.relationship('User', back_populates='entries')

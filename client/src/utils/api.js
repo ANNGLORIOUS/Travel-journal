@@ -21,24 +21,22 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// API functions
+// API functions for entries
 export const getEntries = () => api.get("/entries");
 export const getEntry = (id) => api.get(`/entries/${id}`);
 export const createEntry = (data) => api.post("/entries", data);
 export const updateEntry = (id, data) => api.put(`/entries/${id}`, data);
 export const deleteEntry = (id) => api.delete(`/entries/${id}`);
+
+// API functions for photos
 export const deletePhoto = (entryId, photoId) => api.delete(`/entries/${entryId}/photos/${photoId}`);
 export const getEntryPhotos = (id) => api.get(`/entries/${id}/photos`);
-export const uploadPhoto = (entryId, photoData) =>
-  api.post(`/entries/${entryId}/photos`, { url: photoData.url });
+export const uploadPhoto = (entryId, photoData) => api.post(`/entries/${entryId}/photos`, { url: photoData.url });
 
 // Tag-related functions
 export const getTags = () => api.get("/tags");
 export const createTag = (tagName) => api.post("/tags", { name: tagName });
-export const addTagToEntry = (entryId, tagId) =>
-  api.post(`/entries/${entryId}/tags`, { tag_id: tagId });
-export const removeTagFromEntry = (entryId, tagId) =>
-  api.delete(`/entries/${entryId}/tags/${tagId}`);
+export const addTagsToEntry = (entryId, tagIds) => api.post(`/entries/${entryId}/tags`, { tag_ids: tagIds });
 export const deleteTag = (tagId) => api.delete(`/tags/${tagId}`);
 
 // User-related functions

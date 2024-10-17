@@ -10,7 +10,7 @@ function TagList({ tags = [] }) { // Default to an empty array
           </span>
         ))
       ) : (
-        <span>No tags available.</span> // Message for no tags
+        <span>No tags available.</span>
       )}
     </div>
   );

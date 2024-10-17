@@ -1,22 +1,21 @@
 import React, { useState } from "react";
-import { createTag, addTagToEntry } from "../utils/api";
+import { createTag, addTagsToEntry } from "../utils/api";
 
 function TagInput({ entryId, onTagAdded }) {
   const [tagName, setTagName] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Prevent empty tag submission
-    if (!tagName.trim()) return;
+    if (!tagName.trim()) return; // Prevent empty tag submission
+
     try {
-      // First, create the tag (or get existing)
       const tagResponse = await createTag(tagName);
       const newTag = tagResponse.data;
-      // Then, add the tag to the entry
-      await addTagToEntry(entryId, newTag.id);
-      // Clear input and notify parent component
+
+      // Add the tag to the entry
+      await addTagsToEntry(entryId, [newTag.id]); 
       setTagName("");
-      onTagAdded(newTag);
+      onTagAdded(newTag); 
     } catch (error) {
       console.error("Error adding tag:", error);
     }

@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify, request
 from flask_migrate import Migrate
-from models import db, User, Entry, Photo  
+from models import db, User, Entry, Photo, Tag 
 import os
 from datetime import datetime
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
@@ -216,6 +216,62 @@ def entry_photos(id):
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": f"Failed to upload photo: {str(e)}"}), 500
+        
+# Tags management
+@app.route('/api/tags', methods=['GET', 'POST'])
+@jwt_required()
+def tags_management():
+    if request.method == 'GET':
+        tags = Tag.query.all()
+        return jsonify([tag.to_dict() for tag in tags]), 200
+
+    if request.method == 'POST':
+        data = request.get_json()
+        if not data or 'name' not in data:
+            return jsonify({"error": "Tag name is required."}), 400
+        
+        # Checking if the tag already exists
+        existing_tag = Tag.query.filter_by(name=data['name']).first()
+        if existing_tag:
+            return jsonify({"error": "Tag already exists."}), 409  # Conflict
+
+        new_tag = Tag(name=data['name'])
+        db.session.add(new_tag)
+        db.session.commit()
+        return jsonify({"id": new_tag.id, "name": new_tag.name}), 201
+
+@app.route('/api/entries/<int:entry_id>/tags', methods=['POST'])
+@jwt_required()
+def add_tags_to_entry(entry_id):
+    entry = Entry.query.get(entry_id)
+    if entry is None:
+        return jsonify({"error": "Entry not found."}), 404
+
+    data = request.get_json()
+    if 'tag_ids' not in data or not isinstance(data['tag_ids'], list):
+        return jsonify({"error": "Tag IDs must be provided as a list."}), 400
+
+    # Ensuring the tag_ids are integers
+    tag_ids = [int(tag_id) for tag_id in data['tag_ids']]
+
+    tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
+    if not tags:
+        return jsonify({"error": "No valid tags found for the provided IDs."}), 404
+
+    entry.tags.extend(tags)
+    db.session.commit()
+    return jsonify({"message": "Tags added successfully."}), 200
+
+@app.route('/api/tags/<int:tag_id>', methods=['DELETE'])
+@jwt_required()
+def delete_tag(tag_id):
+    tag = Tag.query.get(tag_id)
+    if tag is None:
+        return jsonify({"error": "Tag not found."}), 404
+
+    db.session.delete(tag)
+    db.session.commit()
+    return jsonify({"message": "Tag deleted successfully."}), 200
 
 # Running the application
 if __name__ == '__main__':
