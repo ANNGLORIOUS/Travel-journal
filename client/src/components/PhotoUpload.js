@@ -1,9 +1,9 @@
-// // export default PhotoUpload;
 import React, { useState } from "react";
 import { uploadPhoto } from "../utils/api";
 
 function PhotoUpload({ entryId, onPhotoUploaded }) {
   const [url, setUrl] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleUrlChange = (e) => {
     setUrl(e.target.value);
@@ -14,10 +14,12 @@ function PhotoUpload({ entryId, onPhotoUploaded }) {
     if (url) {
       try {
         const response = await uploadPhoto(entryId, { url });
-        onPhotoUploaded(response.data);
+        onPhotoUploaded(response.data);  // Pass the new photo data
         setUrl("");
+        setErrorMessage("");  
       } catch (error) {
         console.error("Error uploading photo:", error);
+        setErrorMessage("Error uploading photo. Please try again.");  // Set error message
       }
     }
   };
@@ -38,6 +40,7 @@ function PhotoUpload({ entryId, onPhotoUploaded }) {
           required
         />
       </div>
+      {errorMessage && <div className="text-danger">{errorMessage}</div>}
       <button type="submit" className="btn btn-primary" disabled={!url}>
         Add Photo
       </button>

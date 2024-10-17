@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EntryDetail from "../components/EntryDetail";
 import PhotoUpload from "../components/PhotoUpload";
-import { getEntry, getEntryPhotos, deletePhoto } from "../utils/api"; // import deletePhoto
+import { getEntry, getEntryPhotos, deletePhoto, uploadPhoto } from "../utils/api";
 
 function EntryDetailPage() {
   const { id } = useParams();
   const [entry, setEntry] = useState(null);
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchEntryAndPhotos = async () => {
@@ -19,27 +21,47 @@ function EntryDetailPage() {
         setEntry(entryResponse.data);
         setPhotos(photosResponse.data);
       } catch (error) {
+        setError("Error fetching entry and photos.");
         console.error("Error fetching entry and photos:", error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchEntryAndPhotos();
   }, [id]);
 
   const handlePhotoUploaded = (newPhoto) => {
-    setPhotos([...photos, newPhoto]);
+    console.log("New photo uploaded:", newPhoto); // Debugging line
+    setPhotos((prevPhotos) => [...prevPhotos, newPhoto]); // Update state immediately
   };
 
-  // Function to handle deleting a photo
   const handleDeletePhoto = async (photoId) => {
     try {
-      await deletePhoto(id, photoId); // Call API to delete photo
-      setPhotos(photos.filter((photo) => photo.id !== photoId)); // Update state after deletion
+      await deletePhoto(id, photoId);
+      setPhotos((prevPhotos) => prevPhotos.filter((photo) => photo.id !== photoId));
     } catch (error) {
       console.error("Error deleting photo:", error);
+      setError("Error deleting photo.");
     }
   };
 
-  if (!entry) return <div>Loading...</div>;
+  const handleUploadPhoto = async (photoUrl) => {
+    const photoData = {
+      url: photoUrl,
+    };
+
+    try {
+      const newPhoto = await uploadPhoto(id, photoData);
+      handlePhotoUploaded(newPhoto); // Update state immediately
+    } catch (error) {
+      console.error("Error uploading photo:", error);
+      setError("Error uploading photo.");
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
@@ -55,7 +77,6 @@ function EntryDetailPage() {
               />
               <div className="card-body">
                 <p className="card-text">{photo.description}</p>
-                {/* Delete Button */}
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDeletePhoto(photo.id)}
@@ -68,7 +89,7 @@ function EntryDetailPage() {
         ))}
       </div>
       <EntryDetail entryId={id} />
-      <PhotoUpload entryId={entry.id} onPhotoUploaded={handlePhotoUploaded} />
+      <PhotoUpload entryId={id} onPhotoUploaded={handlePhotoUploaded} />
     </div>
   );
 }

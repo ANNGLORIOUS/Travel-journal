@@ -1,13 +1,17 @@
 import React from "react";
 
-function TagList({ tags }) {
+function TagList({ tags = [] }) { // Default to an empty array
   return (
     <div>
-      {tags.map((tag) => (
-        <span key={tag.id} className="badge bg-secondary me-1">
-          {tag.name}
-        </span>
-      ))}
+      {tags.length > 0 ? (
+        tags.map((tag) => (
+          <span key={tag.id} className="badge bg-secondary me-1">
+            {tag.name}
+          </span>
+        ))
+      ) : (
+        <span>No tags available.</span> // Message for no tags
+      )}
     </div>
   );
 }

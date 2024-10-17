@@ -6,9 +6,14 @@ from models import db, User, Entry, Photo
 import os
 from datetime import datetime
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Creating Flask app instance
 app = Flask(__name__)
+
+# Enables CORS for all routes
+CORS(app)
 
 # Configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://my_database_g8r7_user:CI7mNEPSed8JM64H4fsXUTzJmpr24ZQ1@dpg-cs73djjtq21c73cmjno0-a.oregon-postgres.render.com/travel_journal_db'
@@ -24,13 +29,20 @@ jwt = JWTManager(app)
 db.init_app(app)
 
 # User registration
+# User registration
 @app.route('/api/users/register', methods=['POST'])
 def user_register():
     data = request.get_json()
+    print("Received data:", data)  # Log incoming data
+
+    if not data or not all(key in data for key in ('username', 'email', 'password_hash')):
+        print("Missing required fields")  # Log error
+        return jsonify({"error": "Missing required fields"}), 400
+
     new_user = User(
-        username=data.get('username'),
-        email=data.get('email'),
-        password_hash=data.get('password_hash') 
+        username=data['username'],
+        email=data['email'],
+        password_hash=generate_password_hash(data['password_hash'])  # Hashing the password
     )
     db.session.add(new_user)
     db.session.commit()
@@ -40,9 +52,12 @@ def user_register():
 @app.route('/api/users/login', methods=['POST'])
 def user_login():
     data = request.get_json()
-    user = User.query.filter_by(email=data.get('email')).first()
+    if not data or not all(key in data for key in ('username', 'password')):
+        return jsonify({"error": "Missing required fields"}), 400
+
+    user = User.query.filter_by(username=data['username']).first()  # Change from email to username
     
-    if user and user.verify_password(data.get('password')): 
+    if user and check_password_hash(user.password_hash, data['password']):
         access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token), 200
     
@@ -92,9 +107,16 @@ def entry_list():
 
     if request.method == 'POST':
         data = request.get_json()
+        
+        # Use only the date format
+        try:
+            entry_date = datetime.strptime(data.get('date'), '%Y-%m-%d')  
+        except ValueError:
+            return jsonify({"error": "Invalid date format. Use 'YYYY-MM-DD'."}), 400
+
         new_entry = Entry(
             location=data.get('location'),
-            date=datetime.strptime(data.get('date'), '%Y-%m-%d %H:%M:%S'),
+            date=entry_date,
             description=data.get('description'),
             user_id=get_jwt_identity()
         )
@@ -145,6 +167,7 @@ def entry_resource(id):
 @jwt_required()
 def entry_photos(id):
     entry = Entry.query.get(id)
+    
     if request.method == 'GET':
         if entry is None:
             return jsonify({"error": "Entry not found"}), 404
@@ -155,10 +178,24 @@ def entry_photos(id):
 
     if request.method == 'POST':
         data = request.get_json()
-        new_photo = Photo(url=data.get('url'), entry_id=id)
+        
+        if 'url' not in data or not data['url']:
+            return jsonify({"error": "Photo URL is required."}), 400
+
+        new_photo = Photo(
+            url=data['url'],  
+            entry_id=id,
+            uploaded_at=datetime.utcnow()
+        )
+
         db.session.add(new_photo)
-        db.session.commit()
-        return jsonify({"id": new_photo.id, "url": new_photo.url}), 201
+
+        try:
+            db.session.commit()
+            return jsonify({"id": new_photo.id, "url": new_photo.url}), 201
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"Failed to upload photo: {str(e)}"}), 500
 
 # Running the application
 if __name__ == '__main__':
