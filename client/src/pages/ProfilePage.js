@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getUserProfile } from "../utils/api";
 import { Link } from "react-router-dom";
+
 function ProfilePage() {
   const [profile, setProfile] = useState(null);
 
@@ -27,7 +28,7 @@ function ProfilePage() {
           <h5 className="card-title">{profile.username}</h5>
           <p className="card-text">Email: {profile.email}</p>
           <p className="card-text">
-            Joined: {new Date(profile.created_at).toLocaleDateString()}
+            Joined: {new Date(profile.joined).toLocaleDateString()}
           </p>
           <Link to="/reset-password" className="btn btn-primary">
             Reset Password

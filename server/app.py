@@ -41,7 +41,8 @@ def user_register():
     new_user = User(
         username=data['username'],
         email=data['email'],
-        password_hash=generate_password_hash(data['password_hash'])  # Hashing the password
+        password_hash=generate_password_hash(data['password_hash']),  # Hashing the password
+        created_at=datetime.utcnow()  # Set the joined date
     )
     db.session.add(new_user)
     db.session.commit()
@@ -81,7 +82,8 @@ def user_profile():
     user_data = {
         "id": user.id,
         "username": user.username,
-        "email": user.email
+        "email": user.email,
+        "joined": user.created_at.strftime('%Y-%m-%d %H:%M:%S')  # Format the joined date
     }
     
     return jsonify(user_data), 200
