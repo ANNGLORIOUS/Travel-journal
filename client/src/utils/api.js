@@ -43,9 +43,14 @@ export const removeTagFromEntry = (entryId, tagId) =>
   api.delete(`/entries/${entryId}/tags/${tagId}`);
 export const getUserProfile = () => api.get("/users/profile");
 export const deleteTag = (tagId) => api.delete(`/tags/${tagId}`);
+export const deletePhoto = (entryId, photoId) =>
+  api.delete(`/entries/${entryId}/photos/${photoId}`);
+
 // export const login = (email, password) => api.post("/users/login", { email, password });
 // export const register = (data) => api.post("/users/register", data);
 // export const logout = () => api.post("/users/logout");
-// export const resetPassword = (email) => api.post("/users/reset-password", { email });
+export const resetPassword = (email) =>
+  api.post("/users/reset-password", { email });
 
 export default api;
+ 
