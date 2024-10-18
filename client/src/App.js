@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import CreateEntryPage from "./pages/CreateEntryPage";
 import EditEntryPage from "./pages/EditEntryPage";
@@ -12,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import "./App.css";
 
 function App() {
   return (
@@ -38,6 +40,7 @@ function App() {
               <Route path="/reset-password" component={ResetPasswordPage} />
             </Switch>
           </div>
+          <Footer />
         </div>
       </Router>
     </AuthProvider>

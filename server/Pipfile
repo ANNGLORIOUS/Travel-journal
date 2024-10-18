@@ -30,6 +30,7 @@ typing-extensions = "==4.12.2"
 werkzeug = "==3.0.4"
 zipp = "==3.20.2"
 flask-cors = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
