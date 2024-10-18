@@ -74,8 +74,8 @@ def user_reset_password():
 @jwt_required()
 def user_profile():
     current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    
+    user = db.session.get(User, current_user_id)  # Use session.get()
+
     if user is None:
         return jsonify({"error": "User not found"}), 404
     
@@ -83,7 +83,7 @@ def user_profile():
         "id": user.id,
         "username": user.username,
         "email": user.email,
-        "joined": user.created_at.strftime('%Y-%m-%d %H:%M:%S')  # Format the joined date
+        "joined": user.created_at.strftime('%Y-%m-%d %H:%M:%S')  
     }
     
     return jsonify(user_data), 200
@@ -264,6 +264,25 @@ def delete_tag(tag_id):
     db.session.commit()
     return '', 204
 
+# Update user profile
+@app.route('/api/users/profile', methods=['PUT'])
+@jwt_required()
+def update_user_profile():
+    current_user_id = get_jwt_identity()
+    user = db.session.get(User, current_user_id)  # Use session.get()
+
+    if user is None:
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+
+    # Updating the user's username if provided
+    if 'username' in data:
+        user.username = data['username']
+
+    db.session.commit()
+
+    return jsonify({"message": "User profile updated successfully"}), 200
 
 # Running the application
 if __name__ == '__main__':
