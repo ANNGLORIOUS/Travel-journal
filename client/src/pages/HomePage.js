@@ -31,6 +31,22 @@ function HomePage() {
               alt={`Slide ${index + 1}`}
               style={{ height: "400px", objectFit: "cover" }}
             />
+            <Carousel.Caption
+              style={{
+                backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent background for text
+                borderRadius: "5px",
+                padding: "20px",
+                textAlign: "center",
+              }}
+            >
+              <h2 style={{ color: "white" }}>About Us</h2>
+              <p style={{ color: "white" }}>
+                Welcome to our journal app! Here, you can document your thoughts,
+                experiences, and memories. Explore your journal entries and find
+                inspiration from the beauty around you. Our app provides a simple
+                and intuitive interface to capture life's moments.
+              </p>
+            </Carousel.Caption>
           </Carousel.Item>
         ))}
       </Carousel>
