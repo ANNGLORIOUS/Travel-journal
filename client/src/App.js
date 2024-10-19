@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import JournalEntryPage from "./pages/JournalEntryPage";
 import "./App.css";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <div className="container mt-4">
             <Switch>
               <Route exact path="/" component={HomePage} />
+              <Route path="/journal-entries" component={JournalEntryPage} />
               <ProtectedRoute
                 path="/entries/create"
                 component={CreateEntryPage}

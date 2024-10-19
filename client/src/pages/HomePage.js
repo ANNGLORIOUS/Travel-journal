@@ -1,61 +1,16 @@
-// import React, { useState, useEffect } from "react";
-// import EntryList from "../components/EntryList";
-// import { getEntries } from "../utils/api";
-
-// function HomePage() {
-//   const [entries, setEntries] = useState([]);
-
-//   useEffect(() => {
-//     const fetchEntries = async () => {
-//       try {
-//         const response = await getEntries();
-//         setEntries(response.data);
-//       } catch (error) {
-//         console.error("Error fetching entries:", error);
-//       }
-//     };
-
-//     fetchEntries();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Journal Entries</h1>
-//       <EntryList entries={entries} />
-//     </div>
-//   );
-// }
-
-// export default HomePage;
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Carousel } from "react-bootstrap";
-import EntryList from "../components/EntryList";
-import { getEntries } from "../utils/api";
+import { Link } from "react-router-dom";
 
 // Don't forget to import the Bootstrap CSS in your main App.js or index.js file:
 // import 'bootstrap/dist/css/bootstrap.min.css';
 
 function HomePage() {
-  const [entries, setEntries] = useState([]);
-
-  useEffect(() => {
-    const fetchEntries = async () => {
-      try {
-        const response = await getEntries();
-        setEntries(response.data);
-      } catch (error) {
-        console.error("Error fetching entries:", error);
-      }
-    };
-
-    fetchEntries();
-  }, []);
-
   // Sample images for the slider
   const sliderImages = [
-    "https://img.freepik.com/free-photo/beautiful-nature-landscape-with-black-sandy-beach-ocean_23-2151380422.jpg?size=626&ext=jpg/800x600/007bff/ffffff?text=Slide+1",
-    "https://img.freepik.com/free-photo/low-angle-shot-magnificent-grass-covered-mountains-captured-cloudy-day_181624-37169.jpg?semt=ais_hybrid/800x600/28a745/ffffff?text=Slide+2",
-    "https://img.freepik.com/free-photo/flora-culture-growth-tree-decoration_1417-284.jpg?semt=ais_hybrid/800x600/dc3545/ffffff?text=Slide+3",
+    "https://img.freepik.com/free-photo/beautiful-nature-landscape-with-black-sandy-beach-ocean_23-2151380422.jpg?size=626&ext=jpg",
+    "https://img.freepik.com/free-photo/low-angle-shot-magnificent-grass-covered-mountains-captured-cloudy-day_181624-37169.jpg?semt=ais_hybrid",
+    "https://img.freepik.com/free-photo/flora-culture-growth-tree-decoration_1417-284.jpg?semt=ais_hybrid",
   ];
 
   return (
@@ -80,11 +35,10 @@ function HomePage() {
         ))}
       </Carousel>
 
-      {/* Journal Entries Section */}
-      <div className="container">
-        <h1 className="mb-4">Journal Entries</h1>
-        <EntryList entries={entries} />
-      </div>
+      {/* Link to Journal Entries Page */}
+      <Link to="/journal-entries" className="btn btn-primary mb-4">
+        View Journal Entries
+      </Link>
     </div>
   );
 }

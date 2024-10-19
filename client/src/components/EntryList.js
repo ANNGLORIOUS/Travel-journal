@@ -2,6 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function EntryList({ entries }) {
+  if (entries.length === 0) {
+    return <p>No journal entries available.</p>;
+  }
+
   return (
     <div className="row">
       {entries.map((entry) => (
