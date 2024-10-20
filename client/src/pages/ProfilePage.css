@@ -1,0 +1,28 @@
+.profile-picture {
+    margin-bottom: 20px;
+  }
+  
+  .card {
+    border-radius: 15px;
+  }
+  
+  .card-title input {
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+  
+  .close {
+    cursor: pointer;
+    float: right;
+    font-size: 24px;
+  }
+  
+  
