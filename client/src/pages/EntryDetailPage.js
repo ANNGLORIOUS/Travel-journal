@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import EntryDetail from "../components/EntryDetail";
 import PhotoUpload from "../components/PhotoUpload";
-import { getEntry, getEntryPhotos, deletePhoto, uploadPhoto } from "../utils/api";
+import { getEntry, getEntryPhotos, deletePhoto } from "../utils/api";
 
 function EntryDetailPage() {
   const { id } = useParams();
@@ -14,7 +14,7 @@ function EntryDetailPage() {
   useEffect(() => {
     const fetchEntryAndPhotos = async () => {
       try {
-        const [entryResponse, photosResponse] = await Promise.all([
+        const [ photosResponse] = await Promise.all([
           getEntry(id),
           getEntryPhotos(id),
         ]);
