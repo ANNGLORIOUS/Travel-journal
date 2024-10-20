@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, request, render_template , dotenv
+from flask import Flask, jsonify, request, render_template 
 from flask_migrate import Migrate
 from models import db, User, Entry, Photo, Tag 
 import os
