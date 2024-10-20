@@ -3,12 +3,18 @@
 from flask import Flask, jsonify, request, render_template 
 from flask_migrate import Migrate
 from models import db, User, Entry, Photo, Tag 
+from dotenv import load_dotenv
 import os
 from datetime import datetime
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from pathlib import Path
+dotenv_path = Path(__file__).resolve().parent.parent / '.env'
+
+# Loading the .env file
+load_dotenv(dotenv_path)
 
 # Creating Flask app instance
 app = Flask(
@@ -23,16 +29,18 @@ app = Flask(
 def not_found(e):
     return render_template("index.html")
 
-
-
 # Enables CORS for all routes
 CORS(app)
 
 # Configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://my_database_g8r7_user:CI7mNEPSed8JM64H4fsXUTzJmpr24ZQ1@dpg-cs73djjtq21c73cmjno0-a.oregon-postgres.render.com/travel_journal_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = 'my_jwt_secret_key'  
-app.json.compact = False  
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+
+print(f"SECRET_KEY: {os.getenv('SECRET_KEY')}")
+print(f"JWT_SECRET_KEY: {os.getenv('JWT_SECRET_KEY')}")
+app.json.compact = False 
 
 # Initializing Flask-Migrate and JWT Manager
 migrate = Migrate(app, db)

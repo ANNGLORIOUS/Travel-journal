@@ -46,6 +46,6 @@ export const deleteTag = (tagId) => api.delete(`/tags/${tagId}`);
 
 // User-related functions
 export const getUserProfile = () => api.get("/users/profile");
-export const updateUserProfile = (data) => api.put("/users/profile", data); // Add this line
+export const updateUserProfile = (data) => api.put("/users/profile", data); 
 
 export default api;
