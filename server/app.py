@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from flask_migrate import Migrate
 from models import db, User, Entry, Photo, Tag 
 import os
@@ -10,7 +10,17 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # Creating Flask app instance
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder='../client/build',
+    template_folder='../client/build'
+)
+
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
 
 # Enables CORS for all routes
 CORS(app)
