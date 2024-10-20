@@ -10,9 +10,6 @@ from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-from dotenv import load_dotenv
-load_dotenv()
-
 # Creating Flask app instance
 app = Flask(
     __name__,
