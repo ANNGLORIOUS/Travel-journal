@@ -6,7 +6,7 @@ import { getEntry, getEntryPhotos, deletePhoto, uploadPhoto } from "../utils/api
 
 function EntryDetailPage() {
   const { id } = useParams();
-  const [entry, setEntry] = useState(null);
+  // const [entry, setEntry] = useState(null);
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +18,7 @@ function EntryDetailPage() {
           getEntry(id),
           getEntryPhotos(id),
         ]);
-        setEntry(entryResponse.data);
+        // setEntry(entryResponse.data);
         setPhotos(photosResponse.data);
       } catch (error) {
         setError("Error fetching entry and photos.");
@@ -46,19 +46,19 @@ function EntryDetailPage() {
     }
   };
 
-  const handleUploadPhoto = async (photoUrl) => {
-    const photoData = {
-      url: photoUrl,
-    };
+  // const handleUploadPhoto = async (photoUrl) => {
+  //   const photoData = {
+  //     url: photoUrl,
+  //   };
 
-    try {
-      const newPhoto = await uploadPhoto(id, photoData);
-      handlePhotoUploaded(newPhoto); // Update state immediately
-    } catch (error) {
-      console.error("Error uploading photo:", error);
-      setError("Error uploading photo.");
-    }
-  };
+  //   try {
+  //     const newPhoto = await uploadPhoto(id, photoData);
+  //     handlePhotoUploaded(newPhoto); // Update state immediately
+  //   } catch (error) {
+  //     console.error("Error uploading photo:", error);
+  //     setError("Error uploading photo.");
+  //   }
+  // };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;

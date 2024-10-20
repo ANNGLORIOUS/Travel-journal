@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template , dotenv
 from flask_migrate import Migrate
 from models import db, User, Entry, Photo, Tag 
 import os
@@ -8,6 +8,10 @@ from datetime import datetime
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Creating Flask app instance
 app = Flask(
@@ -21,6 +25,8 @@ app = Flask(
 @app.errorhandler(404)
 def not_found(e):
     return render_template("index.html")
+
+
 
 # Enables CORS for all routes
 CORS(app)
