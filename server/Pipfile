@@ -8,7 +8,7 @@ alembic = "==1.13.3"
 aniso8601 = "==9.0.1"
 blinker = "==1.8.2"
 click = "==8.1.7"
-flask = "==3.0.3"
+flask = "*"
 flask-migrate = "==4.0.7"
 flask-restful = "==0.3.10"
 flask-sqlalchemy = "==3.1.1"
@@ -27,11 +27,15 @@ six = "==1.16.0"
 sqlalchemy = "==2.0.35"
 sqlalchemy-serializer = "==1.4.12"
 typing-extensions = "==4.12.2"
-werkzeug = "==3.0.4"
+werkzeug = "*"
 zipp = "==3.20.2"
 flask-cors = "*"
 flask-jwt-extended = "*"
+<<<<<<< HEAD
 python-dotenv = "*"
+=======
+honcho = "*"
+>>>>>>> 50044c337f8878e6f297a83f8edab36e03370c27
 
 [dev-packages]
 
