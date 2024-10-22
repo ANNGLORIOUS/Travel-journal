@@ -100,7 +100,7 @@ The frontend is built using React and includes several pages and components:
 1. Frontend: React, Formik, Yup, Axios
 2. Backend: Flask, SQLAlchemy, Flask-Migrate, Flask-RESTful
 3. Database: PostgreSQL
-4. Styling: Bootstrap
+4. Styling: Bootstrap, css
 
 ## Support and contact details
 For any issues please email me at annglorious.mueni@student.moringaschool.com
