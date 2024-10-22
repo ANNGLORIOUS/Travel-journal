@@ -12,6 +12,9 @@ This app utilizes Formik for forms and Yup for validation, alongside Axios for A
 
 Check out our deployed application: [View Live App](https://travel-journal-app-ydwm.onrender.com)
 
+### Screenshots
+![Screenshot of the app](file:///home/annglorious/Pictures/Screenshot%20from%202024-10-22%2008-56-41.png)
+
 ### Features
 1. User authentication (login, register, reset password)
 2. User profile management
