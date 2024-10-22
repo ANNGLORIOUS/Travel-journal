@@ -8,6 +8,10 @@ This project was created and is sole property of Annglorious mueni ,Eric Nyamway
 A simple journal application built with React, allowing users to register, log in, manage entries, and edit their profiles. 
 This app utilizes Formik for forms and Yup for validation, alongside Axios for API calls.
 
+## Live Demo
+
+Check out our deployed application: [View Live App](https://travel-journal-app-ydwm.onrender.com)
+
 ### Features
 1. User authentication (login, register, reset password)
 2. User profile management
