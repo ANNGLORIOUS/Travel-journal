@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="footer bg-primary text-white mt-4 py-3">
       <div className="container text-center">
-        <span>© {new Date().getFullYear()} Journal App. All Rights Reserved.</span>
+        <span className="text-white ms-3" >© {new Date().getFullYear()} Journal App. All Rights Reserved.</span>
         <div>
           <a href="https://github.com/ANNGLORIOUS/react-journal-app" className="text-white ms-3">
             <i className="bi bi-github"></i>
