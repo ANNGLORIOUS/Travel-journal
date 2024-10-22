@@ -10,7 +10,7 @@ This app utilizes Formik for forms and Yup for validation, alongside Axios for A
 
 ## Live Demo
 
-Check out our deployed application: [View Live App](https://travel-journal-app-ydwm.onrender.com)
+Check out our deployed application: [View Live App](https://travel-journal-client-arhn.onrender.com)
 
 
 ### Features
