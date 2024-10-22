@@ -12,6 +12,9 @@ This app utilizes Formik for forms and Yup for validation, alongside Axios for A
 
 Check out our deployed application: [View Live App](https://travel-journal-client-arhn.onrender.com)
 
+Go to the following github account for frontend https://github.com/ANNGLORIOUS/Travel-journal-client
+
+Go to the following github account for the backend https://github.com/ANNGLORIOUS/Travel-journal-server
 
 ### Features
 1. User authentication (login, register, reset password)
