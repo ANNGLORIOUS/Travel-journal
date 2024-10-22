@@ -77,11 +77,12 @@ The frontend is built using React and includes several pages and components:
     #### Steps to follow for the backend:
      1. For the backend, navigate into the server directory and set up a virtual environment:
             
-            cd server
             pipenv install && pipenv shell(for the virtual environment).
+            cd server
+
      2. Install the backend dependencies:
 
-            pip install -r requirements.txt
+            pipenv install -r requirements.txt
 
      3. Set up your environment variables in a .env file in the server directory:
 
