@@ -12,8 +12,6 @@ This app utilizes Formik for forms and Yup for validation, alongside Axios for A
 
 Check out our deployed application: [View Live App](https://travel-journal-app-ydwm.onrender.com)
 
-### Screenshots
-![Screenshot of the app](file:///home/annglorious/Pictures/Screenshot%20from%202024-10-22%2008-56-41.png)
 
 ### Features
 1. User authentication (login, register, reset password)
@@ -42,12 +40,13 @@ Check out our deployed application: [View Live App](https://travel-journal-app-y
 - DELETE /api/tags/:id
 ### Frontend Code Overview
 The frontend is built using React and includes several pages and components:
-    - LoginPage: Handles user login.
-    - RegisterPage: Handles user registration.
-    - ProfilePage: Displays and updates user profile information.
-    - ResetPasswordPage: Manages password reset requests.
-    - TagsPage: Manages journal tags.
-    - JournalEntryPage: Handles journal entries.
+
+- LoginPage: Handles user login.
+- RegisterPage: Handles user registration.
+- ProfilePage: Displays and updates user profile information.
+- ResetPasswordPage: Manages password reset requests.
+- TagsPage: Manages journal tags.
+- JournalEntryPage: Handles journal entries.
 
 ## Setup/Installation Requirements
 * One would need either linux or wsl for window users
@@ -64,25 +63,32 @@ The frontend is built using React and includes several pages and components:
 
       #### Steps to follow for the frontend:
       1. Install dependencies for the frontend:
+
                 cd client
                 npm install
       2. In a new terminal, start the frontend:
+
                 cd client
                 npm start
 
     #### Steps to follow for the backend:
-     1. For the backend, create a separate directory, navigate there, and set up a virtual environment:
-            mkdir server
+     1. For the backend, navigate into the server directory and set up a virtual environment:
+            
             cd server
             pipenv install && pipenv shell(for the virtual environment).
      2. Install the backend dependencies:
+
             pip install -r requirements.txt
+
      3. Set up your environment variables in a .env file in the server directory:
+
             PORT=5555
             DATABASE_URL=your_database_connection_string
             JWT_SECRET=your_jwt_secret
+
      4. Start the backend server:
             python app.py
+            
 ## Prerequisites
 1. Python 3.8 or higher
 2. Node.js
